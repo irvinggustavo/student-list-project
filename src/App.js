@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import axios from "axios";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Students from "./components/StudentsList/StudentsList";
+import SearchBar from "./components/SearchBar/SearchBar";
+import SearchByTag from './components/SearchByTag/SearchByTag';
+
+
+class App extends Component {
+  state = {
+    students: [],
+    value: "",
+  };
+
+  componentDidMount() {
+    axios.get("https://api.hatchways.io/assessment/students").then((res) => {
+      this.setState({
+        students: res.data.students,
+      });
+    });
+  }
+
+  changeHandler = (e) => {
+    e.preventDefault();
+    this.setState({
+      value: e.target.value,
+    });
+  };
+
+  render() {
+    return (
+      <>
+        <SearchBar
+           students={this.state.students}
+          changeHandler={this.changeHandler}
+          value={this.state.value}
+        /> 
+        <SearchByTag/>
+        <Students students={this.state.students} value={this.state.value} />
+      </>
+    );
+  }
 }
 
 export default App;

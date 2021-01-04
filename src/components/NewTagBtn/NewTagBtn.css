@@ -1,0 +1,7 @@
+.NewTagBtn {
+  width: 55%;
+  border: none;
+  border-bottom: gray solid 0.0625rem;
+  margin: 1.25rem 0 1.25rem 0;
+  line-height: 1.5rem;
+}

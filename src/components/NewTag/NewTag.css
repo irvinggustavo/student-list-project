@@ -1,0 +1,22 @@
+.tag {
+    list-style: none;
+}
+
+.tag__square {
+    background-color: lightgrey;
+    color: black;
+    margin: 10px 5px;
+    
+}
+
+.tag__container {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.tag_input {
+    border: none;
+    border-bottom: gray 1px solid;
+    line-height: 1.5rem;
+    margin: 20px 0;
+}

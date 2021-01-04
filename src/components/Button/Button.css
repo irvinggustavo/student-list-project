@@ -1,0 +1,13 @@
+.toggle {
+    height: 1.875rem;
+    width: 1.875rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: none;
+   }
+
+   .toggle > h1 {
+        color: grey;
+   }
