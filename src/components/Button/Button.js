@@ -7,9 +7,9 @@ class Button extends Component {
       <button
         className="toggle"
         onClick={this.props.clickHandler}
-        value={this.props.index} 
+        value={this.props.index}
       >
-       <h1>{this.props.sign}</h1>
+        <h1>{this.props.sign}</h1>
       </button>
     );
   }

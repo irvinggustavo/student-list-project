@@ -9,6 +9,7 @@ class Student extends Component {
   state = {
     plusORminus: "+",
     visible: false,
+    students: [],
     newTags: [],
   };
 
@@ -18,7 +19,6 @@ class Student extends Component {
   };
 
   addNewTag = (e) => {
-   
     if (e.keyCode === 13) {
       this.setState({
         newTags: [...this.state.newTags, e.target.value],
@@ -34,7 +34,6 @@ class Student extends Component {
   };
 
   render() {
-  
     let grades = this.props.student.grades.map((i) => Number(i));
     let averageGrade =
       grades.reduce((accumulator, currentValue) => accumulator + currentValue) /
@@ -68,7 +67,8 @@ class Student extends Component {
             <NewTag
               submitHandler={this.submitHandler}
               onKeyDownHandler={this.addNewTag}
-              newTagsList = {this.state.newTags}
+              newTagsList={this.state.newTags}
+              index={this.props.index}
             />
           </div>
         </div>

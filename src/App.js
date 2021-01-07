@@ -4,8 +4,7 @@ import "./App.css";
 
 import Students from "./components/StudentsList/StudentsList";
 import SearchBar from "./components/SearchBar/SearchBar";
-import SearchByTag from './components/SearchByTag/SearchByTag';
-
+import SearchByTag from "./components/SearchByTag/SearchByTag";
 
 class App extends Component {
   state = {
@@ -24,7 +23,7 @@ class App extends Component {
   changeHandler = (e) => {
     e.preventDefault();
     this.setState({
-      value: e.target.value,
+      value: e.target.value
     });
   };
 
@@ -32,11 +31,11 @@ class App extends Component {
     return (
       <>
         <SearchBar
-           students={this.state.students}
+          students={this.state.students}
           changeHandler={this.changeHandler}
           value={this.state.value}
-        /> 
-        <SearchByTag/>
+        />
+        <SearchByTag />
         <Students students={this.state.students} value={this.state.value} />
       </>
     );
