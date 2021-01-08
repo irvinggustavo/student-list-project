@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import "./App.css";
 
-import Students from "./components/StudentsList/StudentsList";
+import StudentsList from "./components/StudentsList/StudentsList";
 import SearchBar from "./components/SearchBar/SearchBar";
 import SearchByTag from "./components/SearchByTag/SearchByTag";
 
@@ -36,7 +36,7 @@ class App extends Component {
           value={this.state.value}
         />
         <SearchByTag />
-        <Students students={this.state.students} value={this.state.value} />
+        <StudentsList students={this.state.students} value={this.state.value} />
       </>
     );
   }
