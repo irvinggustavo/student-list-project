@@ -5,31 +5,19 @@ import "./StudentsList.css";
 import Student from "../Student/Student";
 
 class StudentsList extends Component {
+  // helper function
+  filterStudents(arr, arr2, arr3, query) {
+    return arr.filter((profile, i) => {
+      return profile.toLowerCase().indexOf(query.toLowerCase()) !== -1
+        ? arr2.push(arr3[i])
+        : "";
+    });
+  }
+
   render() {
     if (!this.props.students === null) {
       return <h1>Loading !!!</h1>;
     } else {
-      let studentsNames = [];
-      let studentsLastnames = [];
-      let studentFullnames = [];
-      let valueTolowCase = this.props.value.toLowerCase();
-      // let notWhiteSpaceValue = this.props.value.toLowerCase().trim()
-      let fullName = valueTolowCase.split(" ");
-
-    
-
-      let studentsByName = this.props.students.map((student) => {
-        return student.firstName
-          .toLowerCase()
-          .substring(0, this.props.value.length);
-      });
-
-      let studentsbyLastname = this.props.students.map((student) => {
-        return student.lastName
-          .toLowerCase()
-          .substring(0, this.props.value.length);
-      });
-
       if (!this.props.value || this.props.value.length === 1) {
         const fullStudentList = this.props.students.map((student, i) => {
           return <Student key={uuidv4()} student={student} index={i} />;
@@ -37,63 +25,118 @@ class StudentsList extends Component {
 
         return <ul className="container"> {fullStudentList} </ul>;
       } else {
-        if (
-          studentsByName.includes(valueTolowCase ) ||
-          studentsbyLastname.includes(valueTolowCase ) ||
-           valueTolowCase.indexOf(' ') >= 0 || 
-            (studentsByName.includes( fullName[0] ) ||
-              studentsbyLastname.includes( fullName[0] ))
-        ) {
-          if (this.props.value.length > 1) {
-            if (studentsByName.includes(valueTolowCase)) {
-              studentsByName.filter((name, i) => {
-                return name === valueTolowCase
-                  ? studentsNames.push(this.props.students[i])
-                  : "";
-              });
-            }
-          }
+        const value = this.props.value.toLowerCase();
+        const splitValue = value.split(" ");
+        const profilesByNames = [];
+        const profilesByLastNames = [];
+        let studentsProfiles = [];
+        let profiles = [];
 
-          // check for user input in the students array LASTNAME property or return an error msg
-          if (this.props.value.length > 1) {
-            if (studentsbyLastname.includes(valueTolowCase)) {
-              studentsbyLastname.filter((name, i) => {
-                return name === valueTolowCase
-                  ? studentsLastnames.push(this.props.students[i])
-                  : "";
-              });
-            }
-          }
-console.log(fullName)
+        const studentsByName = this.props.students.map((student) => {
+          return student.firstName
+            .toLowerCase()
+            .substring(0, this.props.value.trim().length);
+        });
+
+        const studentsbyLastname = this.props.students.map((student) => {
+          return student.lastName
+            .toLowerCase()
+            .substring(0, this.props.value.length);
+        });
+
+        const studentsFullName = this.props.students.map((student) => {
+          return (
+            student.firstName.toLowerCase() +
+            " " +
+            student.lastName.toLowerCase()
+          ).substring(0, this.props.value.length);
+        });
+
+        if (studentsFullName.includes(value)) {
+          console.log("case1");
+
           if (
-            (studentsByName && studentsByName.includes(fullName[0 || 1])) ||
-            (studentsbyLastname &&
-              studentsbyLastname.includes(fullName[0 || 1] )) 
+            studentsByName.includes(splitValue[0]) ||
+            studentsbyLastname.includes(splitValue[0])
           ) {
-            let i =
-              studentsByName.indexOf(fullName[0]) === -1
-                ? studentsbyLastname.indexOf(fullName[0])
-                : studentsByName.indexOf(fullName[0]);
+            this.filterStudents(
+              studentsByName,
+              profilesByNames,
+              this.props.students,
+              splitValue[0]
+            );
 
-            studentFullnames.push(this.props.students[i]);
+            this.filterStudents(
+              studentsbyLastname,
+              profilesByLastNames,
+              this.props.students,
+              splitValue[0]
+            );
+
+            profiles = profilesByNames.concat(profilesByLastNames);
+          } else {
+            studentsFullName.filter((student, i) => {
+              return student === value
+                ? studentsProfiles.push(this.props.students[i])
+                : "";
+            });
           }
+          let data = profiles ? profiles : studentsProfiles;
 
-          let filterStudentList =
-            studentFullnames.length === 1
-              ? studentFullnames
-              : studentsNames.concat(studentsLastnames);
-
-          let filterJSXList = filterStudentList.map((student, i) => {
-            return <Student key={uuidv4()} student={student} index={i} />;
+          const studentsProfilesJSX = data.map((profile, i) => {
+            return <Student key={uuidv4()} student={profile} index={i} />;
           });
 
-          return <ul className="container"> {filterJSXList} </ul>;
+          return <ul>{studentsProfilesJSX}</ul>;
         } else {
-          return (
-            <h1>
-              This name is not in our database, please try a diferent one !!!!
-            </h1>
-          );
+          let errMsg = "";
+
+          if (
+            studentsByName.includes(splitValue[0]) ||
+            studentsbyLastname.includes(splitValue[0])
+          ) {
+            console.log("case2");
+            this.filterStudents(
+              studentsByName,
+              profilesByNames,
+              this.props.students,
+              splitValue[0]
+            );
+
+            this.filterStudents(
+              studentsbyLastname,
+              profilesByLastNames,
+              this.props.students,
+              splitValue[0]
+            );
+
+            profiles = profilesByNames.concat(profilesByLastNames);
+          } else {
+            errMsg = (
+              <h1>
+                {" "}
+                This student is not in our database, try a diferent one !!!
+              </h1>
+            );
+          }
+
+          if (
+            studentsByName.indexOf(splitValue[0]) >= 1 &&
+            studentsbyLastname.indexOf(splitValue[0]) === -1
+          ) {
+            errMsg = (
+              <h1>
+                {" "}
+                This student is not in our database, try a diferent one !!!
+              </h1>
+            );
+          }
+
+          const studentsProfilesJSX = profiles.map((profile, i) => {
+            return <Student key={uuidv4()} student={profile} index={i} />;
+          });
+
+          return errMsg ? errMsg : <ul>{studentsProfilesJSX}</ul>;
         }
       }
     }
