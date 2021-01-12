@@ -2,28 +2,13 @@ import React, { Component } from "react";
 import { v4 as uuidv4 } from "uuid";
 import "./Student.css";
 
-import NewTag from "../NewTag/NewTag";
+import NewTagInput from "../NewTagInput/NewTagInput";
 import Button from "../Button/Button";
 
 class Student extends Component {
   state = {
     plusORminus: "+",
     visible: false,
-    students: [],
-    newTags: [],
-  };
-
-  submitHandler = (event) => {
-    event.preventDefault();
-    console.log(event.target);
-  };
-
-  addNewTag = (e) => {
-    if (e.keyCode === 13) {
-      this.setState({
-        newTags: [...this.state.newTags, e.target.value],
-      });
-    }
   };
 
   toggle = () => {
@@ -38,6 +23,16 @@ class Student extends Component {
     let averageGrade =
       grades.reduce((accumulator, currentValue) => accumulator + currentValue) /
       grades.length;
+
+    const dinamicTags = this.props.student.tags
+      ? this.props.student.tags.map((tag) => {
+          return (
+            <li className="tag_input tag__square tag" key={uuidv4()}>
+              {tag}
+            </li>
+          );
+        })
+      : "";
 
     return (
       <li key={uuidv4()} className="student__container">
@@ -64,11 +59,12 @@ class Student extends Component {
                 </li>
               ))}
             </ul>
-            <NewTag
-              submitHandler={this.submitHandler}
-              onKeyDownHandler={this.addNewTag}
-              newTagsList={this.state.newTags}
+            <ul className="tag__container ">{dinamicTags}</ul>
+            <NewTagInput
+              submitHandler={this.props.submitHandler}
+              onKeyDownHandler={this.props.addNewTag}
               index={this.props.index}
+              id={this.props.student.id}
             />
           </div>
         </div>

@@ -14,16 +14,38 @@ class App extends Component {
 
   componentDidMount() {
     axios.get("https://api.hatchways.io/assessment/students").then((res) => {
+      let updatedData = res.data.students.map((obj, i) => {
+        return Object.assign(obj, (obj.tags = []));
+      });
       this.setState({
-        students: res.data.students,
+        students: updatedData,
       });
     });
   }
 
+  addNewTag = (e) => {
+    if (e.keyCode === 13) {
+      let studentsCopy = this.state.students.slice();
+      studentsCopy
+        .find((x) => x.id === e.target.name)
+        .tags.push(e.target.value);
+
+      let newTag = [e.target.value];
+      let i = Number(e.target.name);
+
+      console.log(i);
+      console.log(newTag);
+
+      this.setState({
+        students: studentsCopy,
+      });
+    }
+  };
+
   changeHandler = (e) => {
     e.preventDefault();
     this.setState({
-      value: e.target.value
+      value: e.target.value,
     });
   };
 
@@ -36,7 +58,11 @@ class App extends Component {
           value={this.state.value}
         />
         <SearchByTag />
-        <StudentsList students={this.state.students} value={this.state.value} />
+        <StudentsList
+          students={this.state.students}
+          value={this.state.value}
+          addNewTag={this.addNewTag}
+        />
       </>
     );
   }

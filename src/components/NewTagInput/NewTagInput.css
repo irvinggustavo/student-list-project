@@ -1,4 +1,4 @@
-.tag {
+/* .tag {
     list-style: none;
 }
 
@@ -12,11 +12,11 @@
 .tag__container {
     display: flex;
     justify-content: flex-start;
-}
+} */
 
-.tag_input {
+/* .tag_input {
     border: none;
     border-bottom: gray 1px solid;
     line-height: 1.5rem;
     margin: 20px 0;
-}
+} */

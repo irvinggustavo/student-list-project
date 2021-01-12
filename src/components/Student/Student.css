@@ -33,3 +33,28 @@
   .vissible {
     list-style: none;
   }
+
+  .tag {
+    list-style: none;
+}
+
+.tag__square {
+    background-color: lightgrey;
+    color: black;
+    margin: 10px 20px;
+    
+}
+
+.tag__container {
+    display: flex;
+    justify-content:space-evenly;
+    width: 40%;
+}
+
+.tag_input {
+  border: none;
+  border-bottom: gray 1px solid;
+  line-height: 1.5rem;
+  margin: 20px 0;
+  padding: 5px;
+}
