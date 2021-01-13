@@ -5,27 +5,9 @@ import "./StudentsList.css";
 import Student from "../Student/Student";
 
 class StudentsList extends Component {
-  // state = {
-  //   newTags: Array.from(Array(27), (x, i) => [i]),
-  // };
-
   submitHandler = (event) => {
     event.preventDefault();
   };
-
-  // addNewTag = (e) => {
-  //   if (e.keyCode === 13) {
-  //     let updatedTagContainer = this.state.newTags.splice(0, 25);
-  //     let newTag = e.target.value;
-  //     let i = Number(e.target.name);
-  //     updatedTagContainer[i].push(newTag);
-
-
-  //     this.setState({
-  //       newTags: updatedTagContainer,
-  //     });
-  //   }
-  // };
 
   filterStudents(arr, arr2, arr3, query) {
     return arr.filter((profile, i) => {
@@ -36,25 +18,17 @@ class StudentsList extends Component {
   }
 
   render() {
-    // console.log(this.state.newTags);
     if (!this.props.students === null) {
       return <h1>Loading !!!</h1>;
     } else {
-      if (!this.props.value || this.props.value.length === 1) {
-        const fullStudentList = this.props.students.map((student, i) => {
-          return (
-            <Student
-              key={uuidv4()}
-              student={student}
-              index={i}
-              submitHandler={this.submitHandler}
-              addNewTag={this.props.addNewTag}
-              // newTags={this.state.newTags}
-            />
-          );
-        });
+      let studentsData;
+      let errMsg = (
+        <h1> This student is not in our database, try a diferent one !!! </h1>
+      );
+      let error;
 
-        return <ul className="container"> {fullStudentList} </ul>;
+      if (!this.props.value || this.props.value.length === 1) {
+        studentsData = this.props.students;
       } else {
         const value = this.props.value.toLowerCase();
         const splitValue = value.split(" ");
@@ -104,99 +78,52 @@ class StudentsList extends Component {
 
             profiles = profilesByNames.concat(profilesByLastNames);
           } else {
-            studentsFullName.filter((student, i) => {
-              return student === value
-                ? studentsProfiles.push(this.props.students[i])
-                : "";
-            });
+            error = errMsg;
           }
-          let data = profiles ? profiles : studentsProfiles;
 
-          const studentsProfilesJSX = data.map((profile, i) => {
-            return (
-              <Student
-                key={uuidv4()}
-                student={profile}
-                index={i}
-                submitHandler={this.submitHandler}
-                addNewTag={this.props.addNewTag}
-                // newTags={this.state.newTags}
-              />
-            );
-          });
-
-          return <ul>{studentsProfilesJSX}</ul>;
+          studentsData = profiles ? profiles : studentsProfiles;
         } else {
-          let errMsg = "";
+          this.filterStudents(
+            studentsByName,
+            profilesByNames,
+            this.props.students,
+            splitValue[0]
+          );
+
+          this.filterStudents(
+            studentsbyLastname,
+            profilesByLastNames,
+            this.props.students,
+            splitValue[0]
+          );
+
+          profiles = profilesByNames.concat(profilesByLastNames);
 
           if (
-            studentsByName.includes(splitValue[0]) ||
-            studentsbyLastname.includes(splitValue[0])
+            (studentsByName.indexOf(splitValue[0]) >= 1 &&
+              studentsbyLastname.indexOf(splitValue[0]) === -1) ||
+            (studentsByName.indexOf(splitValue[0]) === -1 &&
+              studentsbyLastname.indexOf(splitValue[0]) === -1)
           ) {
-            this.filterStudents(
-              studentsByName,
-              profilesByNames,
-              this.props.students,
-              splitValue[0]
-            );
-
-            this.filterStudents(
-              studentsbyLastname,
-              profilesByLastNames,
-              this.props.students,
-              splitValue[0]
-            );
-
-            profiles = profilesByNames.concat(profilesByLastNames);
-          } else {
-            errMsg = (
-              <h1>
-                {" "}
-                This student is not in our database, try a diferent one !!!
-              </h1>
-            );
+            error = errMsg;
           }
 
-          if (
-            studentsByName.indexOf(splitValue[0]) >= 1 &&
-            studentsbyLastname.indexOf(splitValue[0]) === -1
-          ) {
-            errMsg = (
-              <h1>
-                {" "}
-                This student is not in our database, try a diferent one !!!
-              </h1>
-            );
-          }
-
-          if (
-            studentsByName.indexOf(splitValue[0]) === -1 &&
-            studentsbyLastname.indexOf(splitValue[0]) === -1
-          ) {
-            errMsg = (
-              <h1>
-                {" "}
-                This student is not in our database, try a diferent one !!!
-              </h1>
-            );
-          }
-
-          const studentsProfilesJSX = profiles.map((profile, i) => {
-            return (
-              <Student
-                key={uuidv4()}
-                student={profile}
-                index={i}
-                submitHandler={this.submitHandler}
-                // newTags={this.state.newTags}
-                addNewTag={this.props.addNewTag}
-              />
-            );
-          });
-
-          return errMsg ? errMsg : <ul>{studentsProfilesJSX}</ul>;
+          studentsData = profiles;
         }
       }
+
+      const studentsProfilesJSX = studentsData.map((profile, i) => {
+        return (
+          <Student
+            key={uuidv4()}
+            student={profile}
+            index={i}
+            submitHandler={this.submitHandler}
+            addNewTag={this.props.addNewTag}
+          />
+        );
+      });
+      return error ? error : <ul>{studentsProfilesJSX}</ul>;
     }
   }
 }

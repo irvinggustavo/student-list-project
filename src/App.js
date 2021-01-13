@@ -30,12 +30,6 @@ class App extends Component {
         .find((x) => x.id === e.target.name)
         .tags.push(e.target.value);
 
-      let newTag = [e.target.value];
-      let i = Number(e.target.name);
-
-      console.log(i);
-      console.log(newTag);
-
       this.setState({
         students: studentsCopy,
       });

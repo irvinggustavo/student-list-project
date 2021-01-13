@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-// import { v4 as uuidv4 } from "uuid";
-import "./NewTagInput.css";
 
 class NewTagInput extends Component {
   render() {
-
     return (
       <>
         <form onSubmit={this.props.submitHandler}>
