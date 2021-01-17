@@ -3,14 +3,16 @@ import "./SearchBar.css";
 
 class SearchBar extends Component {
   render() {
+
+    const {name, placeholder, namesHandler, tagFinder, value} = this.props;
     return (
       <input
         className="searchBar"
         type="text"
-        name="searchBar"
-        placeholder="Search by Name"
-        onChange={this.props.changeHandler}
-        value={this.props.value}
+        name= {name}
+        placeholder= {placeholder}
+        onChange={ name === 'searchByNames' ? namesHandler : tagFinder}
+        value={value}
       />
     );
   }

@@ -4,7 +4,6 @@ import "./App.css";
 
 import StudentsList from "./components/StudentsList/StudentsList";
 import SearchBar from "./components/SearchBar/SearchBar";
-import SearchByTag from "./components/SearchByTag/SearchByTag";
 
 class App extends Component {
   state = {
@@ -36,7 +35,7 @@ class App extends Component {
     }
   };
 
-  changeHandler = (e) => {
+  studentFinder = (e) => {
     e.preventDefault();
     this.setState({
       value: e.target.value,
@@ -47,11 +46,19 @@ class App extends Component {
     return (
       <>
         <SearchBar
+          name="searchByNames"
+          placeholder="Search By Name"
           students={this.state.students}
-          changeHandler={this.changeHandler}
+          namesHandler={this.studentFinder}
           value={this.state.value}
         />
-        <SearchByTag />
+        {/* <SearchBar
+          name="searchByTags"
+          placeholder="Search By Tag"
+          students={this.state.students}
+          tagFinder={this.tagFinder}
+          value={this.state.tagsValue}
+        /> */}
         <StudentsList
           students={this.state.students}
           value={this.state.value}

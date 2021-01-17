@@ -18,15 +18,15 @@ class StudentsList extends Component {
   }
 
   render() {
+    let studentsData;
+    let errMsg = (
+      <h1> This student is not in our database, try a diferent one !!! </h1>
+    );
+    let error;
+
     if (!this.props.students === null) {
       return <h1>Loading !!!</h1>;
     } else {
-      let studentsData;
-      let errMsg = (
-        <h1> This student is not in our database, try a diferent one !!! </h1>
-      );
-      let error;
-
       if (!this.props.value || this.props.value.length === 1) {
         studentsData = this.props.students;
       } else {
